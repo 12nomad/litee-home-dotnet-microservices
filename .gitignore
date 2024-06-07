@@ -1,0 +1,8 @@
+src/Services/Listings/obj/
+src/Services/Listings/bin/
+src/Services/Wishlist/obj/
+src/Services/Wishlist/bin/
+src/Common/obj/
+src/Common/bin/
+
+Readme.md

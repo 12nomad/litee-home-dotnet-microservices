@@ -1,0 +1,50 @@
+services:
+  home-listings-service:
+    build:
+      context: .
+      dockerfile: ./Services/Listings/Dockerfile
+    command: dotnet watch
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORT=8080
+      - ASPNETCORE_HTTPS_PORT=8081
+      - ConnectionStrings__ListingsDbContext=Server=home-listings-postgres;Port=5432;Database=home-listings;User Id=postgres;Password=543210;Include Error Detail=true
+    depends_on:
+      - home-listings-postgres
+    ports:
+      - "6000:8080"
+      - "6100:8081"
+  home-listings-postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 543210
+      POSTGRES_DB: home-listings
+    volumes:
+      - home-listings-postgres-data:/var/lib/postgresql/data/
+  home-wishlist-postgres:
+    image: postgres:latest
+    ports:
+      - 6543:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 543210
+      POSTGRES_DB: home-wishlist
+    volumes:
+      - home-wishlist-postgres-data:/var/lib/postgresql/data/
+  # mongodb:
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data:/data/db
+  home-redis:
+    image: redis:latest
+    container_name: home-redis
+    ports:
+      - "6379:6379"
+volumes:
+  home-listings-postgres-data: {}
+  home-wishlist-postgres-data: {}
